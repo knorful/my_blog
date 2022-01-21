@@ -1,7 +1,27 @@
 import React from 'react';
 import { getPosts } from '../proxies/proxies';
 
-export const App = () => {
-    let posts = getPosts();
-    return <h1>Hello</h1>
+export class App extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            posts: []
+        }
+    }
+
+    componentDidMount() {
+        getPosts()
+        .then(posts => {
+            this.setState({posts})
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                {this.state.posts.map(p => <p>{`${p.content}`}</p>)}
+            </div>
+        )
+    }
 }
