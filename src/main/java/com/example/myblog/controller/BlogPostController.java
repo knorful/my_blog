@@ -28,4 +28,9 @@ public class BlogPostController {
     public void deletePost(@PathVariable Integer id) {
         dataService.deletePost(id);
     }
+
+    @PutMapping(path = "{id}")
+    public void updatePost(@RequestBody BlogPost blog, @PathVariable Integer id) {
+        dataService.updatePost(blog, id);
+    }
 }

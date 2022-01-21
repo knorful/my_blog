@@ -31,7 +31,31 @@ public class DataService {
             System.out.println(e);
 
         }
+    }
 
+    public void updatePost(BlogPost newBlog, Integer id) {
+        try {
+            var searchForBlog = blogPostRepo.findById(id);
+            System.out.println("found this blog => " + searchForBlog);
+            searchForBlog
+                    .ifPresentOrElse(blog -> {
+                                System.out.println(blog);
+                                blogPostRepo.save(
+                                        new BlogPost(
+                                                id,
+                                                newBlog.getImageLink(),
+                                                newBlog.getTitle(),
+                                                newBlog.getContent(),
+                                                newBlog.getDatePosted(),
+                                                newBlog.getDateUpdated()
+                                        )
+                                );
+                            },
+                            () -> System.out.println("blog not found!")
+                    );
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 }
