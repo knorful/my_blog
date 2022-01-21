@@ -1,5 +1,6 @@
 import React from 'react';
 import { getPosts } from '../proxies/proxies';
+import SearchAppBar from './SearchBar';
 
 export class App extends React.Component {
     constructor(props) {
@@ -20,7 +21,8 @@ export class App extends React.Component {
     render() {
         return (
             <div>
-                {this.state.posts.map(p => <p>{`${p.content}`}</p>)}
+                <SearchAppBar />
+                {this.state.posts.map((p, i) => <p key={p + i}>{`${p.content}`}</p>)}
             </div>
         )
     }
