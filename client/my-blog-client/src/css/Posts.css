@@ -1,0 +1,14 @@
+img {
+    height: auto;
+    width: 400px;
+    border-radius: 5px 0 0 5px;
+}
+
+#post-container {
+    display: flex;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.452);
+}
+
+#post-content {
+    width: 100%;
+}

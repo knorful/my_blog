@@ -1,7 +1,8 @@
+import Container from '@mui/material/Container';
 import React from 'react';
 import { getPosts } from '../proxies/proxies';
+import { Posts } from './Posts';
 import SearchAppBar from './SearchBar';
-import {Posts} from './Posts';
 
 export class App extends React.Component {
     constructor(props) {
@@ -14,17 +15,19 @@ export class App extends React.Component {
 
     componentDidMount() {
         getPosts()
-        .then(posts => {
-            this.setState({posts})
-        })
+            .then(posts => {
+                this.setState({ posts })
+            })
     }
 
     render() {
         return (
-            <div>
+            <>
                 <SearchAppBar />
-                <Posts posts={this.state.posts} />
-            </div>
+                <Container maxWidth="md">
+                    <Posts posts={this.state.posts} />
+                </Container>
+            </>
         )
     }
 }
