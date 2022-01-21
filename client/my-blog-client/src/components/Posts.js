@@ -6,7 +6,7 @@ import PostsCSS from '../css/Posts.css';
 export const Posts = (props) => {
 
     return (
-        <Box component="div" sx={{ border: '1px solid #2E3B55', marginTop: '50px', height: '600px', borderRadius: '5px' }}>
+        <Box component="div" sx={{ marginTop: '50px', height: '400px', borderRadius: '5px' }}>
             <article style={PostsCSS}>
                 {props.posts.map((p, i) => {
                     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -27,7 +27,7 @@ export const Posts = (props) => {
                                 <Typography style={{ margin: '25px' }} variant='body1' gutterBottom>
                                     {p.content}
                                 </Typography>
-                                <Typography variant='body1'>
+                                <Typography id="datePosted" variant='body1'>
                                     {`${date} ${month} ${year}`}
                                 </Typography>
                             </div>
