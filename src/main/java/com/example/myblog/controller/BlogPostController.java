@@ -21,8 +21,11 @@ public class BlogPostController {
 
     @PostMapping
     public void createPost(@RequestBody BlogPost blog) {
-        System.out.println("blog =>" + blog);
         dataService.createPost(blog);
     }
 
+    @DeleteMapping(path = "{id}")
+    public void deletePost(@PathVariable Integer id) {
+        dataService.deletePost(id);
+    }
 }

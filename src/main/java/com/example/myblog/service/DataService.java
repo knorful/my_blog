@@ -21,4 +21,17 @@ public class DataService {
         blogPostRepo.save(blog);
     }
 
+    public void deletePost(Integer id) {
+        System.out.println("Deleting Post ....");
+        try {
+            blogPostRepo.deleteById(id);
+            System.out.println("Post Deleted");
+        } catch (Exception e) {
+            System.out.println("Post not found!");
+            System.out.println(e);
+
+        }
+
+    }
+
 }
