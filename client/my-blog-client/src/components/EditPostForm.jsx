@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { addPost } from '../proxies/proxies';
+import { editPost, getPostById } from '../proxies/proxies';
 
 const theme = createTheme({
     palette: {
@@ -15,8 +15,11 @@ const theme = createTheme({
     }
 });
 
-export const AddPostForm = (props) => {
+export const EditPostForm = (props) => {
     let navigate = useNavigate();
+    let params = useParams();
+    let paramsId = params.id
+
     const [title, setTitle] = useState("");
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -37,6 +40,8 @@ export const AddPostForm = (props) => {
         setMainContent(e.target.value);
     }
 
+    useEffect(() => getPost(paramsId), []);
+
     const handleSubmit = () => {
         let newPost = {
             title,
@@ -46,10 +51,21 @@ export const AddPostForm = (props) => {
             datePosted: new Date(),
             dateUpdated: new Date(),
         }
-        setTimeout(() => navigate('/blog'), 800)
-        addPost(newPost);
+        setTimeout(() => navigate(`/blog/${paramsId}`), 800);
+        editPost(paramsId, newPost);
         props.handleLoading();
 
+    }
+
+    const getPost = async (id) => {
+        console.log(id);
+        let post = await getPostById(id)
+            .then(res => res);
+
+        setTitle(post.title);
+        setContent(post.content);
+        setMainContent(post.mainContent);
+        setImageURL(post.imageLink);
     }
 
     return (
@@ -63,7 +79,7 @@ export const AddPostForm = (props) => {
             autoComplete="off"
         >
             <Typography variant='body1'>
-                New Blog
+                Edit Blog
             </Typography>
             <div className="form-fields">
                 <TextField
@@ -105,12 +121,11 @@ export const AddPostForm = (props) => {
             </div>
             <ThemeProvider theme={theme} >
                 <Button
-                    style={{ marginTop: 55 }}
+                    style={{ marginTop: 20 }}
                     color="primary"
                     variant="outlined"
                     onClick={() => {
                         handleSubmit();
-                        // navigate('/');
                     }}
                 >
                     Submit

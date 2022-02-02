@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { Link } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -51,7 +52,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar(props) {
+
+  const handleChange = (e) => {
+    props.handleSearchChange(e.target.value);
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ background: 'white', color: 'black' }}>
@@ -71,7 +77,7 @@ export default function SearchAppBar() {
             component="p"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            Kris Norful
+            <Link to="/blog" style={{textDecoration: 'none', color: 'black'}}>Kris Norful</Link>
           </Typography>
           <Typography component="p" variant='overline'>
             Blog
@@ -83,6 +89,7 @@ export default function SearchAppBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              onChange={handleChange}
             />
           </Search>
         </Toolbar>

@@ -5,6 +5,7 @@ import { getPostById } from '../proxies/proxies';
 import { useParams } from 'react-router-dom';
 import { createDate } from '../helpers/helpers'
 import { DeletePostButton } from './DeletePostButton';
+import { EditPostButton } from './EditPostButton';
 
 export const Post = (props) => {
     const [post, setPost] = useState({});
@@ -38,7 +39,12 @@ export const Post = (props) => {
                     <Typography mb={2} variant="caption" display="block">
                         Kristopher Norful, Software Engineering Apprentice
                     </Typography>
-                    <DeletePostButton postid={post.id} />
+                    <div className='Post-buttons'>
+                        <DeletePostButton postid={post.id} />
+                        <EditPostButton
+                            post={post}
+                        />
+                    </div>
                 </Box>
                 <hr id="Post-divider"></hr>
                 <Box component="div" sx={{ marginTop: '150px', height: '400px', borderRadius: '5px', width: 400 }}>
