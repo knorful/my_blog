@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RequestMapping("/blog")
 public class BlogPostController {
 
@@ -18,6 +18,11 @@ public class BlogPostController {
     @GetMapping
     public List<BlogPost> getPosts() {
         return dataService.getPosts();
+    }
+
+    @GetMapping(path = "{id}")
+    public BlogPost getPostById(@PathVariable Integer id) {
+        return dataService.getPostById(id);
     }
 
     @PostMapping

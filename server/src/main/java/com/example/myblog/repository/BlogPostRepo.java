@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface BlogPostRepo extends JpaRepository<BlogPost, Integer> {
 
     Optional<BlogPost> findById(Integer id);
+    BlogPost getPostById(Integer id);
 
 }

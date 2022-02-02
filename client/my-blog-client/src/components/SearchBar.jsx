@@ -54,7 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{background: '#2E3B55'}}>
+      <AppBar position="static" style={{ background: 'white', color: 'black' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -66,14 +66,14 @@ export default function SearchAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h6"
+            variant="overline"
             noWrap
-            component="div"
+            component="p"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
             Kris Norful
           </Typography>
-          <Search>
+          <Search style={{ backgroundColor: '#fafafa' }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

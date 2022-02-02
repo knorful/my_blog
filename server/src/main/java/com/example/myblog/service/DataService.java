@@ -17,6 +17,11 @@ public class DataService {
         return blogPostRepo.findAll();
     }
 
+    public BlogPost getPostById(Integer id) {
+        System.out.println("Getting Post By Id...");
+        return blogPostRepo.getPostById(id);
+    }
+
     public void createPost(BlogPost blog) {
         blogPostRepo.save(blog);
     }
