@@ -73,6 +73,9 @@ export default function SearchAppBar() {
           >
             Kris Norful
           </Typography>
+          <Typography component="p" variant='overline'>
+            Blog
+          </Typography>
           <Search style={{ backgroundColor: '#fafafa' }}>
             <SearchIconWrapper>
               <SearchIcon />

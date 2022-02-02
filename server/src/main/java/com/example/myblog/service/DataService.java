@@ -51,6 +51,7 @@ public class DataService {
                                                 newBlog.getImageLink(),
                                                 newBlog.getTitle(),
                                                 newBlog.getContent(),
+                                                newBlog.getMainContent(),
                                                 newBlog.getDatePosted(),
                                                 newBlog.getDateUpdated()
                                         )

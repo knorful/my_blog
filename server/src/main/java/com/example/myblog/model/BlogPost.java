@@ -28,6 +28,8 @@ public class BlogPost {
     private String imageLink;
     private String title;
     private String content;
+    @Lob
+    private String mainContent;
     private Date datePosted;
     private Date dateUpdated;
 }

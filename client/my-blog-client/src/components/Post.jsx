@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { getPostById } from '../proxies/proxies';
 import { useParams } from 'react-router-dom';
+import { createDate } from '../helpers/helpers'
+import { DeletePostButton } from './DeletePostButton';
 
 export const Post = (props) => {
     const [post, setPost] = useState({});
     let params = useParams();
 
     useEffect(() => {
-        console.log("id " + params.id)
         fetchPost(params.id)
     }, []);
 
@@ -18,9 +21,32 @@ export const Post = (props) => {
         setPost(foundPost);
     }
 
+    let date = createDate(post.datePosted)
+
     return (
-        <div>
-            {post.title}
-        </div>
+        <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '70%' }}>
+                <Box component="div" sx={{ marginTop: '125px', height: '400px', borderRadius: '5px', width: 400 }}>
+                    {`${date.month}. ${date.date}. ${date.year.toString().split('').slice(2).join('')}`}
+                    <Typography variant="h2" mb={2}>
+                        {post.title}
+                    </Typography>
+                    <Typography mb={2} variant="h5" style={{ fontWeight: '300' }}>
+                        {post.content}
+                    </Typography>
+                    <img src={post.imageLink} alt={post.title} />
+                    <Typography mb={2} variant="caption" display="block">
+                        Kristopher Norful, Software Engineering Apprentice
+                    </Typography>
+                    <DeletePostButton postid={post.id} />
+                </Box>
+                <hr id="Post-divider"></hr>
+                <Box component="div" sx={{ marginTop: '150px', height: '400px', borderRadius: '5px', width: 400 }}>
+                    <Typography variant="body1">
+                        {post.mainContent}
+                    </Typography>
+                </Box>
+            </div>
+        </>
     )
 }

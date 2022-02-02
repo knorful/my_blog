@@ -7,6 +7,8 @@ img {
     max-width: 400px;
     flex-shrink: 2;
     border-radius: 5px;
+    position: relative;
+    z-index: 1;
 }
 
 .title-link {
@@ -16,12 +18,24 @@ img {
 
 .post-wrapper {
     display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
     justify-content: space-around;
+    margin-right: 80px;
+}
+
+.form-fields {
+    width: 100%;
+}
+
+.add-form {
+    margin-top: 15%;
+    text-align: center;
 }
 
 #post-container {
-    margin-bottom: 25px;
-    background-color: rgb(245, 245, 245);
+    margin-bottom: 50px;
+    background-color: #fdfbfb;
     padding: 25px;
     border-radius: 10px;
 }
@@ -35,6 +49,37 @@ img {
 #date-and-content {
     display: flex;
     align-items: center;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
+}
+
+#footer {
+    box-sizing: border-box;
+    background-color: #f5f4f4;
+    width: 100vw;
+    position: relative;
+    z-index: 999;
+    text-align: center;
+    padding: 40px;
+}
+
+#contact-links i {
+    margin: 0 10px;
+    font-size: 1.2rem;
+    background-color: rgb(80, 80, 80);
+    padding: 4px;
+    border-radius: 50%;
+    color: white;
+}
+
+#add-button,
+#delete-button {
+    text-decoration: none;
+    margin: 50px auto;
+}
+
+#Post-divider {
+    height: 70vh;
+    width: 5px;
+    background-color: rgb(167, 167, 167);
+    border: none;
+    margin-top: 50px;
 }
