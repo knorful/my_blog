@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { addPost } from '../proxies/proxies';
-import {Categories} from './Categories';
+import { addPost, getCategories, addCategories, deleteCategory } from '../proxies/proxies';
+import { Categories } from './Categories';
 
 const theme = createTheme({
     palette: {
@@ -51,6 +51,42 @@ export const AddPostForm = (props) => {
         addPost(newPost);
         props.handleLoading();
 
+    }
+
+    // ********* CATEGORIES **********
+
+    const [category, setCategory] = useState("");
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        let foundCategories = await getCategories()
+            .then(res => res);
+        let fetchedCategories = foundCategories.map(cat => cat.name)
+        setCategories(fetchedCategories);
+    }
+
+    const handleChange = (e) => {
+        setCategory(e.target.value);
+    }
+
+    const handleKeyPress = e => {
+        if (e.key === "Enter" && category !== "") {
+            e.preventDefault();
+            setCategories((prev) => [...prev, category.toLowerCase()])
+            addCategories(category);
+            setCategory("")
+        }
+    }
+
+    const removeCategory = (e, index) => {
+        e.preventDefault();
+        deleteCategory(categories[index]);
+        let newCategories = categories.filter((c, i) => index !== i);
+        setCategories(newCategories);
     }
 
     return (
@@ -105,7 +141,13 @@ export const AddPostForm = (props) => {
                 />
             </div>
 
-            <Categories />
+            <Categories
+                categories={categories}
+                category={category}
+                handleChange={handleChange}
+                handleKeyPress={handleKeyPress}
+                removeCategory={removeCategory}
+            />
 
             <ThemeProvider theme={theme} >
                 <Button

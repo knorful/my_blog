@@ -8,9 +8,10 @@ import { createDate } from '../helpers/helpers'
 import { AddPostButton } from './AddPostButton';
 
 export const Posts = (props) => {
+    let filteredPosts;
+
     const [posts, setPosts] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    let filteredPosts;
 
     useEffect(() => {
         fetchPosts();
@@ -28,6 +29,7 @@ export const Posts = (props) => {
     const handleLoading = () => {
         setIsLoading(true);
     }
+
 
     if (props.searchTerm) {
         filteredPosts = posts.filter((post) => {
