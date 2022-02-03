@@ -99,3 +99,10 @@ footer {
     border: none;
     margin-top: 50px;
 }
+
+#Categories input {
+    border-radius: 10px;
+    padding: 5px 10px;
+    border: 1px solid #c7c6c6;
+    margin: 10px;
+}

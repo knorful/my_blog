@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "blog_post")
 public class BlogPost {
 
@@ -32,4 +33,16 @@ public class BlogPost {
     private String mainContent;
     private Date datePosted;
     private Date dateUpdated;
+
+    public BlogPost() {
+        setPostCategories(new HashSet<>());
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+            @JoinTable(
+                    name="post_categories",
+                    joinColumns = @JoinColumn(name = "post_id", nullable = false, updatable = false),
+                    inverseJoinColumns = @JoinColumn(name = "categories_id", nullable = false, updatable = false)
+            )
+    public Set<Categories> postCategories;
 }

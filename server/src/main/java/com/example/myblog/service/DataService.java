@@ -1,7 +1,10 @@
 package com.example.myblog.service;
 
 import com.example.myblog.model.BlogPost;
+import com.example.myblog.model.Categories;
 import com.example.myblog.repository.BlogPostRepo;
+import com.example.myblog.repository.CategoriesRepo;
+import com.example.myblog.repository.PostCategoriesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,12 @@ public class DataService {
 
     @Autowired
     BlogPostRepo blogPostRepo;
+
+    @Autowired
+    CategoriesRepo categoriesRepo;
+
+    @Autowired
+    PostCategoriesRepo repo;
 
     public List<BlogPost> getPosts() {
         return blogPostRepo.findAll();
@@ -24,6 +33,7 @@ public class DataService {
 
     public void createPost(BlogPost blog) {
         blogPostRepo.save(blog);
+        repo.testPersistence();
     }
 
     public void deletePost(Integer id) {
@@ -53,7 +63,8 @@ public class DataService {
                                                 newBlog.getContent(),
                                                 newBlog.getMainContent(),
                                                 newBlog.getDatePosted(),
-                                                newBlog.getDateUpdated()
+                                                newBlog.getDateUpdated(),
+                                                null
                                         )
                                 );
                             },
@@ -62,6 +73,11 @@ public class DataService {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void addCategory(Categories category) {
+        System.out.println("Saving Category......");
+        categoriesRepo.save(category);
     }
 
 }

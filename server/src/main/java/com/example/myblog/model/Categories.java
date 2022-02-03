@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,5 +26,8 @@ public class Categories {
     )
     private int id;
     private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "postCategories")
+    Set<BlogPost> posts;
 
 }

@@ -22,6 +22,8 @@ export const Post = (props) => {
         setPost(foundPost);
     }
 
+    console.log("post => ", post);
+
     let date = createDate(post.datePosted)
 
     return (
@@ -40,7 +42,7 @@ export const Post = (props) => {
                         Kristopher Norful, Software Engineering Apprentice
                     </Typography>
                     <div className='Post-buttons'>
-                        <DeletePostButton postid={post.id} />
+                        <DeletePostButton postid={post.postId} />
                         <EditPostButton
                             post={post}
                         />

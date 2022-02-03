@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { addPost } from '../proxies/proxies';
+import {Categories} from './Categories';
 
 const theme = createTheme({
     palette: {
@@ -103,6 +104,9 @@ export const AddPostForm = (props) => {
                     onChange={handleMainContentChange}
                 />
             </div>
+
+            <Categories />
+
             <ThemeProvider theme={theme} >
                 <Button
                     style={{ marginTop: 55 }}
@@ -110,7 +114,6 @@ export const AddPostForm = (props) => {
                     variant="outlined"
                     onClick={() => {
                         handleSubmit();
-                        // navigate('/');
                     }}
                 >
                     Submit
