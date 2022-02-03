@@ -7,15 +7,13 @@ export const Categories = (props) => {
     const [categories, setCategories] = useState([]);
 
     const handleChange = (e) => {
-        // console.log("newValue => " + newValue);
-        setCategory(e.target.value);
-
+            setCategory(e.target.value);
     }
 
     const handleKeyPress = e => {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && category !== "") {
             e.preventDefault();
-            setCategories((prev) => [...prev, category])
+            setCategories((prev) => [...prev, category.toLowerCase()])
             setCategory("")
         }
     }
@@ -32,8 +30,9 @@ export const Categories = (props) => {
             <datalist id="categories-datalist">
                 {categories.map((c,i) => <option key={i} value={c} />)}
             </datalist>
-            <ButtonGroup variant="outlined" aria-label="outlined button group">
+            <ButtonGroup color='secondary' size="small" variant="outlined" aria-label="outlined button group">
                 {categories.map((c, i) => {
+                    console.log("category => " + c)
                     return <Button onClick={(e) => removeCategory(e, i)} key={c + i}>{c}</Button>
                 })}
             </ButtonGroup>

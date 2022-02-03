@@ -1,16 +1,18 @@
 package com.example.myblog.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @Table(name = "blog_post")
 public class BlogPost {
@@ -38,11 +40,25 @@ public class BlogPost {
         setPostCategories(new HashSet<>());
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
             @JoinTable(
                     name="post_categories",
-                    joinColumns = @JoinColumn(name = "post_id", nullable = false, updatable = false),
+                    joinColumns = @JoinColumn(name = "post_id"),
                     inverseJoinColumns = @JoinColumn(name = "categories_id", nullable = false, updatable = false)
             )
+    @ToString.Exclude
     public Set<Categories> postCategories;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        BlogPost blogPost = (BlogPost) o;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

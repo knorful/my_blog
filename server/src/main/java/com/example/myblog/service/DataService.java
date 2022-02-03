@@ -32,8 +32,7 @@ public class DataService {
     }
 
     public void createPost(BlogPost blog) {
-        blogPostRepo.save(blog);
-        repo.testPersistence();
+        var savePost = blogPostRepo.save(blog);
     }
 
     public void deletePost(Integer id) {

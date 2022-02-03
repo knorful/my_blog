@@ -15,31 +15,20 @@ import java.util.Set;
 public class PostCategoriesRepo {
 
     @Autowired
-    private BlogPostRepo repo;
+    private BlogPostRepo blogPostRepo;
+
+    @Autowired
+    private CategoriesRepo categoriesRepo;
 
     @Transactional
-    public int testPersistence() {
-
-        BlogPost bp = new BlogPost();
-        bp.setImageLink("http://somelink");
-        bp.setTitle("Test");
-        bp.setContent("Testing the test");
-        bp.setMainContent("Testing the test...please work :)");
-        bp.setDatePosted(new Date());
-        bp.setDateUpdated(new Date());
+    public void testPersistence( BlogPost blog) {
 
         Categories c = new Categories();
-        c.setId(1);
         c.setName("React");
 
-
-        bp.getPostCategories().add(c);
-        System.out.println("post categories => " + bp.getPostCategories());
-
-        repo.save(bp);
-
-        System.out.println("test persistence id => " + bp.getId());
-        return bp.getId();
+        categoriesRepo.save(c);
+        blog.getPostCategories().add(c);
+        blogPostRepo.save(blog);
 
     }
 

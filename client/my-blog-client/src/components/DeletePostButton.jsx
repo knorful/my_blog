@@ -24,15 +24,15 @@ export const DeletePostButton = (props) => {
     return (
         <ThemeProvider theme={theme} >
             <div style={{ width: '100%', textAlign: 'center' }}>
-                    <Button
-                        id="delete-button"
-                        style={{ marginBottom: '50px', color: 'red' }}
-                        color="primary"
-                        variant="outlined"
-                        onClick={() => deletePostById(props.postid)}
-                    >
-                        Delete Post
-                    </Button>
+                <Button
+                    id="delete-button"
+                    style={{ marginBottom: '50px', color: 'red' }}
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => deletePostById(props.postid)}
+                >
+                    Delete Post
+                </Button>
             </div>
         </ThemeProvider>
     )
