@@ -30,18 +30,20 @@ export const getCategories = async () => {
 }
 
 export const addCategories = async (category) => {
-    return await axios.post('http://localhost:8080/categories', {name: category})
+    return await axios.post('http://localhost:8080/categories', { name: category })
 }
 
 export const addSelectedCategories = async (selected) => {
 
-    console.log("selected => " + selected)
-    let payload = {
-        selected
-    }
-
-    let select = await axios.post('http://localhost:8080/categories/selected', payload);
-    console.log(select)
+    axios({
+        url: "http://localhost:8080/categories/selected",
+        method: 'post',
+        data: selected
+    })
+        .then((res) => {
+            console.log("RES => " + res)
+        })
+        .catch(e => console.log("error: " + e))
 }
 
 export const deleteCategory = async (id) => {

@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { addPost, getCategories, addCategories, deleteCategory } from '../proxies/proxies';
+import { addPost, getCategories, addCategories, deleteCategory, addSelectedCategories } from '../proxies/proxies';
 import { Categories } from './Categories';
 
 const theme = createTheme({
@@ -49,7 +49,7 @@ export const AddPostForm = (props) => {
         }
         setTimeout(() => navigate('/blog'), 800)
         addPost(newPost);
-        props.handleLoading();
+        addSelectedCategories(selectedCategories)
 
     }
 
@@ -57,6 +57,7 @@ export const AddPostForm = (props) => {
 
     const [category, setCategory] = useState("");
     const [categories, setCategories] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
     useEffect(() => {
         fetchCategories();
@@ -87,6 +88,12 @@ export const AddPostForm = (props) => {
         deleteCategory(categories[index]);
         let newCategories = categories.filter((c, i) => index !== i);
         setCategories(newCategories);
+    }
+
+    const selectCategory = (e) => {
+        e.preventDefault();
+        let categoryText = e.target.innerText.toLowerCase();
+        setSelectedCategories(prev => [...prev, categoryText])
     }
 
     return (
@@ -147,6 +154,7 @@ export const AddPostForm = (props) => {
                 handleChange={handleChange}
                 handleKeyPress={handleKeyPress}
                 removeCategory={removeCategory}
+                selectCategory={selectCategory}
             />
 
             <ThemeProvider theme={theme} >

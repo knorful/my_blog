@@ -10,7 +10,7 @@ export const Categories = (props) => {
             </datalist>
             <ButtonGroup color='secondary' size="small" variant="outlined" aria-label="outlined button group">
                 {props.categories.map((c, i) => {
-                    return <Button onDoubleClick={(e) => props.removeCategory(e, i)} key={c + i}>{c}</Button>
+                    return <Button onDoubleClick={(e) => props.removeCategory(e, i)} onClick={props.selectCategory} key={c + i}>{c}</Button>
                 })}
             </ButtonGroup>
         </div>
