@@ -19,6 +19,7 @@ export const DeletePostButton = (props) => {
         let deletedPost = await deletePost(id)
             .then(res => res);
         setTimeout(() => navigate("/blog"), 800);
+        console.log(deletedPost);
     }
 
     return (

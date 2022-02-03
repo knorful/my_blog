@@ -13,7 +13,7 @@ export const Post = (props) => {
 
     useEffect(() => {
         fetchPost(params.id)
-    }, []);
+    }, [params.id]);
 
     const fetchPost = async (id) => {
         let foundPost = await getPostById(id)

@@ -2,7 +2,6 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { editPost } from '../proxies/proxies';
-import { Typography } from '@mui/material';
 
 const theme = createTheme({
     palette: {

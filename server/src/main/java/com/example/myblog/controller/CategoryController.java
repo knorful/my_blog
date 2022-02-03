@@ -3,22 +3,26 @@ package com.example.myblog.controller;
 import com.example.myblog.model.Categories;
 import com.example.myblog.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
+@CrossOrigin
 @RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired
     DataService dataService;
 
+    @GetMapping
+    public List<Categories> getCategories() {
+        return dataService.getCategories();
+    }
+
     @PostMapping
-    public String addCategory(@RequestBody Categories category) {
+    public void addCategory(@RequestBody Categories category) {
         dataService.addCategory(category);
-        return "completed";
     }
 
 }

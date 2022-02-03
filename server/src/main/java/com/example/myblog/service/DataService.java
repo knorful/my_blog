@@ -74,9 +74,15 @@ public class DataService {
         }
     }
 
+//    ********** Categories **************
+
     public void addCategory(Categories category) {
         System.out.println("Saving Category......");
         categoriesRepo.save(category);
+    }
+
+    public List<Categories> getCategories() {
+        return categoriesRepo.findAll();
     }
 
 }
