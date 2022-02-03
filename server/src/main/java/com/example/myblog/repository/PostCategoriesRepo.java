@@ -19,19 +19,21 @@ public class PostCategoriesRepo {
 
     @Transactional
     public void testPersistence(BlogPost blog , Categories c) {
-        categoriesRepo.save(c);
-        blog.getPostCategories().add(c);
-        System.out.println("get post categories => " + blog.getPostCategories());
-        blogPostRepo.save(new BlogPost(
-                blog.getId(),
-                blog.getImageLink(),
-                blog.getTitle(),
-                blog.getContent(),
-                blog.getMainContent(),
-                blog.getDatePosted(),
-                blog.getDateUpdated(),
-                blog.getPostCategories()
-        ));
+            Categories newCat = new Categories();
+            newCat.setId(c.getId());
+            newCat.setName(c.getName());
+            blog.getPostCategories().add(newCat);
+            System.out.println("get post categories => " + blog.getPostCategories());
+            blogPostRepo.save(new BlogPost(
+                    blog.getId(),
+                    blog.getImageLink(),
+                    blog.getTitle(),
+                    blog.getContent(),
+                    blog.getMainContent(),
+                    blog.getDatePosted(),
+                    blog.getDateUpdated(),
+                    blog.getPostCategories()
+            ));
     }
 
 }

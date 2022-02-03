@@ -24,6 +24,8 @@ public class DataService {
     @Autowired
     PostCategoriesRepo repo;
 
+    private List<String> selectedCategories;
+
     public List<BlogPost> getPosts() {
         return blogPostRepo.findAll();
     }
@@ -35,10 +37,13 @@ public class DataService {
 
     public void createPost(BlogPost blog) {
         var savedPost = blogPostRepo.save(blog);
+        var categories = getCategories();
 
-        Categories c = new Categories();
-        c.setName("Programming");
-        repo.testPersistence(blog, c);
+        for (Categories c : categories) {
+            if (selectedCategories.contains(c.getName().toLowerCase())) {
+                repo.testPersistence(blog, c);
+            }
+        }
     }
 
     public void deletePost(Integer id) {
@@ -101,6 +106,10 @@ public class DataService {
             }
         }
 
+    }
+
+    public void getSelectedCategory(List<String> selected) {
+         selectedCategories = selected;
     }
 
 }

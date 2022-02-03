@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -32,8 +31,8 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/selected")
-    public void addSelectedCategory(@RequestBody List selected) {
-        System.out.println("selected cats => " + selected);
+    public void addSelectedCategory(@RequestBody List<String> selected) {
+        dataService.getSelectedCategory(selected);
     }
 
 }
