@@ -1,5 +1,6 @@
 package com.example.myblog.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -41,6 +42,7 @@ public class BlogPost {
     }
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+   @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
             @JoinTable(
                     name="post_categories",
                     joinColumns = @JoinColumn(name = "post_id"),

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class DataService {
@@ -32,7 +34,11 @@ public class DataService {
     }
 
     public void createPost(BlogPost blog) {
-        var savePost = blogPostRepo.save(blog);
+        var savedPost = blogPostRepo.save(blog);
+
+        Categories c = new Categories();
+        c.setName("Programming");
+        repo.testPersistence(blog, c);
     }
 
     public void deletePost(Integer id) {
@@ -74,9 +80,27 @@ public class DataService {
         }
     }
 
+//    ********** Categories **************
+
     public void addCategory(Categories category) {
         System.out.println("Saving Category......");
         categoriesRepo.save(category);
+    }
+
+    public List<Categories> getCategories() {
+        return Optional.of(categoriesRepo.findAll()).get();
+    }
+
+    public void deleteCategory(String id) {
+        System.out.println("Deleting Category...");
+        var cats = getCategories();
+
+        for (Categories c : cats) {
+            if (Objects.equals(c.getName(), id)) {
+                categoriesRepo.deleteById(c.getId());
+            }
+        }
+
     }
 
 }

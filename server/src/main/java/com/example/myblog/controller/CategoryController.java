@@ -3,22 +3,37 @@ package com.example.myblog.controller;
 import com.example.myblog.model.Categories;
 import com.example.myblog.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@CrossOrigin
 @RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired
     DataService dataService;
 
+    @GetMapping
+    public List<Categories> getCategories() {
+        return dataService.getCategories();
+    }
+
+    @DeleteMapping(path = "{id}")
+    public void deleteCategories(@PathVariable String id) {
+        dataService.deleteCategory(id);
+    }
+
     @PostMapping
-    public String addCategory(@RequestBody Categories category) {
+    public void addCategory(@RequestBody Categories category) {
         dataService.addCategory(category);
-        return "completed";
+    }
+
+    @PostMapping(path = "/selected")
+    public void addSelectedCategory(@RequestBody List selected) {
+        System.out.println("selected cats => " + selected);
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.myblog.controller;
 import com.example.myblog.model.BlogPost;
 import com.example.myblog.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class BlogPostController {
         return dataService.getPostById(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createPost(@RequestBody BlogPost blog) {
         dataService.createPost(blog);
     }

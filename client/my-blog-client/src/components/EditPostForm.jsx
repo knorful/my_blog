@@ -40,7 +40,7 @@ export const EditPostForm = (props) => {
         setMainContent(e.target.value);
     }
 
-    useEffect(() => getPost(paramsId), []);
+    useEffect(() => getPost(paramsId), [paramsId]);
 
     const handleSubmit = () => {
         let newPost = {

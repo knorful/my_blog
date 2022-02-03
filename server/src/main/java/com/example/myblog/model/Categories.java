@@ -1,10 +1,9 @@
 package com.example.myblog.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
-
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -30,6 +29,7 @@ public class Categories {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "postCategories")
+   @JsonBackReference
     @ToString.Exclude
     Set<BlogPost> posts;
 
