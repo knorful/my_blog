@@ -18,7 +18,7 @@ public class PostCategoriesRepo {
     private CategoriesRepo categoriesRepo;
 
     @Transactional
-    public void testPersistence(BlogPost blog , Categories c) {
+    public void addPostCategories(BlogPost blog , Categories c) {
             Categories newCat = new Categories();
             newCat.setId(c.getId());
             newCat.setName(c.getName());

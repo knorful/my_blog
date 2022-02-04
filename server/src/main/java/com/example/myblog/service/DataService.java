@@ -41,7 +41,7 @@ public class DataService {
 
         for (Categories c : categories) {
             if (selectedCategories.contains(c.getName().toLowerCase())) {
-                repo.testPersistence(blog, c);
+                repo.addPostCategories(blog, c);
             }
         }
     }
