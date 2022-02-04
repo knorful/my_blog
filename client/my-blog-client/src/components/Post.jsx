@@ -27,7 +27,7 @@ export const Post = (props) => {
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '70%' }}>
-                <Box component="div" sx={{ marginTop: '125px', height: '400px', borderRadius: '5px', width: 400 }}>
+                <Box component="div" sx={{ marginTop: '55px', height: '400px', borderRadius: '5px', width: 400 }}>
                     {`${date.month}. ${date.date}. ${date.year.toString().split('').slice(2).join('')}`}
                     <Typography variant="h2" mb={2}>
                         {post.title}
