@@ -36,7 +36,7 @@ export const Posts = (props) => {
             let postNameLowerCased = post.title.toLowerCase();
             let searchTermLowerCased = props.searchTerm.toLowerCase();
 
-            return postNameLowerCased.startsWith(searchTermLowerCased)
+            return postNameLowerCased.includes(searchTermLowerCased)
         });
 
     }

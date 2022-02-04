@@ -8,6 +8,8 @@ import com.example.myblog.repository.PostCategoriesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,9 +26,20 @@ public class DataService {
     @Autowired
     PostCategoriesRepo repo;
 
+    @Autowired
+    EntityManager entityManager;
+
     private List<String> selectedCategories;
 
     public List<BlogPost> getPosts() {
+        var sql = "SELECT pc.post_id, pc.categories_id FROM my_blog.post_categories pc";
+        Query q = entityManager.createNativeQuery(sql);
+        List<Object[]> rows = q.getResultList();
+
+        for (Object[] r : rows) {
+            System.out.println(">>>> " + r[0] + " | " + r[1]);
+        }
+
         return blogPostRepo.findAll();
     }
 
@@ -41,7 +54,7 @@ public class DataService {
 
         for (Categories c : categories) {
             if (selectedCategories.contains(c.getName().toLowerCase())) {
-                repo.addPostCategories(blog, c);
+                repo.addPostCategories(savedPost, c);
             }
         }
     }

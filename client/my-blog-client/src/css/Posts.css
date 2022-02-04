@@ -53,6 +53,11 @@ footer {
     border-radius: 5%;
 }
 
+#post-container:hover {
+    box-shadow: 2px 5px 5px rgb(153, 153, 153);
+    cursor: pointer;
+}
+
 #post-content {
     position: relative;
     width: 100%;
