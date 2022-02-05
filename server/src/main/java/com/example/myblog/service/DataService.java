@@ -5,14 +5,14 @@ import com.example.myblog.model.Categories;
 import com.example.myblog.repository.BlogPostRepo;
 import com.example.myblog.repository.CategoriesRepo;
 import com.example.myblog.repository.PostCategoriesRepo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DataService {
@@ -31,16 +31,48 @@ public class DataService {
 
     private List<String> selectedCategories;
 
-    public List<BlogPost> getPosts() {
+    public String getPosts() {
         var sql = "SELECT pc.post_id, pc.categories_id FROM my_blog.post_categories pc";
+        var getAllPosts = blogPostRepo.findAll();
         Query q = entityManager.createNativeQuery(sql);
         List<Object[]> rows = q.getResultList();
+        HashMap<HashMap<String, Object>, Categories> map = new HashMap<>();
 
-        for (Object[] r : rows) {
-            System.out.println(">>>> " + r[0] + " | " + r[1]);
+        for (var i = 0; i < getAllPosts.size(); i++) {
+            for (Object[] r : rows) {
+                var currPost = getAllPosts.get(i);
+                Integer postId = (Integer) r[0];
+                Integer categoryId = (Integer) r[1];
+                HashMap<String, Object> blog = new HashMap<>();
+
+                blog.put("id", currPost.getId());
+                blog.put("content", currPost.getContent());
+                blog.put("datePosted", currPost.getDatePosted());
+                blog.put("dateUpdated", currPost.getDateUpdated());
+                blog.put("imageLink", currPost.getImageLink());
+                blog.put("mainContent", currPost.getMainContent());
+                blog.put("title", currPost.getTitle());
+
+                if (currPost.getId() == postId) {
+                    var foundCat = categoriesRepo.findById(categoryId).get();
+                    map.put(blog, foundCat);
+                }
+            }
         }
 
-        return blogPostRepo.findAll();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String json = objectMapper.writeValueAsString(map);
+            System.out.println(json);
+            return json;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+//        System.out.println("list >>>> " + map);
+
+//        return map;
+        return sql;
     }
 
     public BlogPost getPostById(Integer id) {

@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @CrossOrigin
 @RequestMapping("/blog")
@@ -17,7 +15,7 @@ public class BlogPostController {
     DataService dataService;
 
     @GetMapping
-    public List<BlogPost> getPosts() {
+    public String getPosts() {
         return dataService.getPosts();
     }
 

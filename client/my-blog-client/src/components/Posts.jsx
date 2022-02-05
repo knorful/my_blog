@@ -18,11 +18,32 @@ export const Posts = (props) => {
     }, [])
 
     const fetchPosts = async () => {
+        let postsDB = [];
         let newPosts = await getPosts()
             .then(posts => {
+                let blogPosts = Object.keys(posts);
+
+                blogPosts.map((bp, i) => {
+                    let obj = {};
+                    bp = bp.replace('{', '');
+                    bp = bp.replace('}', '');
+
+                    var arr = bp.split(','); 
+
+                    arr.forEach((item, i ) => {
+                        var s = item.split('=');
+                        obj[s[0]] = s[1];
+                        
+                    })
+
+                    postsDB.push(JSON.parse(JSON.stringify(obj).replace(/" /g, '"')));
+                });
+
                 return posts;
             })
-        setPosts(newPosts);
+
+        console.log(postsDB)
+        setPosts(postsDB);
         setIsLoading(false);
     }
 
