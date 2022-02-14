@@ -77,7 +77,11 @@ export default function SearchAppBar(props) {
             component="p"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <Link to="/blog" style={{textDecoration: 'none', color: 'black'}}><em>Kris</em> <strong>Norful</strong></Link>
+            <Link to="/blog" style={{ textDecoration: 'none', color: 'black', fontSize: '.8rem' }}>
+              <span>{"<"}</span>
+              <em>Kris</em> <strong>Norful</strong>
+              <span>{" />"}</span>
+            </Link>
           </Typography>
           <Typography component="p" variant='overline'>
             Blog

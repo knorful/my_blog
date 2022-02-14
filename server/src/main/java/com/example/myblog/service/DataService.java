@@ -57,9 +57,7 @@ public class DataService {
                     var foundCat = categoriesRepo.findById(categoryId).orElse(null);
 
                     if (map.containsKey(blog)) {
-                        System.out.println("foundCat: " + foundCat);
                         map.get(blog).add(foundCat);
-                        System.out.println("map: " + map);
                     } else {
                         catList.add(foundCat);
                         map.put(blog, catList);
@@ -77,7 +75,7 @@ public class DataService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        
+
         return sql;
     }
 

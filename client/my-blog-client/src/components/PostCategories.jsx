@@ -17,9 +17,9 @@ const PostCategories = (props) => {
                 {props.postCats.map((pc, i) => {
                     if (props.idx === i) {
                         if (Array.isArray(pc[i])) {
-                            return pc[i].map(pc => <Button>{pc}</Button>)
+                            return pc[i].map(pc => <Button>{pc.name}</Button>)
                         } else {
-                            return <Button>{pc[i]}</Button>
+                            return <Button>{pc[i].name}</Button>
                         }
                     }
                 })}

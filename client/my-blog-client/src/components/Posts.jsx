@@ -3,8 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import PostsCSS from '../css/Posts.css';
 import PostCategories from './PostCategories';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import CatSection from './CatSection';
 import { getPosts } from '../proxies/proxies';
 import { Link } from 'react-router-dom';
 import { createDate } from '../helpers/helpers'
@@ -48,10 +47,10 @@ export const Posts = (props) => {
                 blogCats.map((bc, i) => {
                     let obj = {};
                     if (bc.length > 1) {
-                        let catArr = bc.map(c => c.name)
+                        let catArr = bc.map(c => c)
                         obj[i] = catArr;
                     } else {
-                        obj[i] = bc[0].name
+                        obj[i] = bc;
                     }
                     catsDB.push(JSON.parse(JSON.stringify(obj)))
                 })
@@ -80,10 +79,10 @@ export const Posts = (props) => {
 
     }
 
-    console.log(postCats);
+    console.log(posts);
 
     return (
-        <>
+        <div style={{display: "flex"}}>
             <Box style={PostsCSS} component="div" sx={{ marginTop: '50px', height: '400px', borderRadius: '5px' }}>
                 {!filteredPosts ? (
                     <article className='post-wrapper'>
@@ -123,7 +122,6 @@ export const Posts = (props) => {
                                     const date = createDate(p.datePosted);
                                     return (
                                         <div id="post-container" key={p.title}>
-                                            <PostCategories postCats={postCats} />
                                             <Link
                                                 to={`/blog/${p.id}`}
                                                 className='title-link'
@@ -150,6 +148,8 @@ export const Posts = (props) => {
                 }
                 <AddPostButton loading={handleLoading} />
             </Box>
-        </>
+            <hr id="Post-divider"></hr>
+            <CatSection />
+        </div>
     )
 }
