@@ -36,27 +36,36 @@ public class DataService {
         var getAllPosts = blogPostRepo.findAll();
         Query q = entityManager.createNativeQuery(sql);
         List<Object[]> rows = q.getResultList();
-        HashMap<HashMap<String, Object>, Categories> map = new HashMap<>();
+        HashMap<HashMap<String, Object>, List<Categories>> map = new HashMap<>();
 
         for (var i = 0; i < getAllPosts.size(); i++) {
             for (Object[] r : rows) {
                 var currPost = getAllPosts.get(i);
+                List<Categories> catList = new ArrayList<>();
                 Integer postId = (Integer) r[0];
                 Integer categoryId = (Integer) r[1];
                 HashMap<String, Object> blog = new HashMap<>();
 
-                blog.put("id", currPost.getId());
-                blog.put("content", currPost.getContent());
-                blog.put("datePosted", currPost.getDatePosted());
-                blog.put("dateUpdated", currPost.getDateUpdated());
-                blog.put("imageLink", currPost.getImageLink());
-                blog.put("mainContent", currPost.getMainContent());
-                blog.put("title", currPost.getTitle());
-
                 if (currPost.getId() == postId) {
-                    var foundCat = categoriesRepo.findById(categoryId).get();
-                    map.put(blog, foundCat);
+                    blog.put("id", currPost.getId());
+                    blog.put("content", currPost.getContent());
+                    blog.put("datePosted", currPost.getDatePosted());
+                    blog.put("dateUpdated", currPost.getDateUpdated());
+                    blog.put("imageLink", currPost.getImageLink());
+                    blog.put("mainContent", currPost.getMainContent());
+                    blog.put("title", currPost.getTitle());
+                    var foundCat = categoriesRepo.findById(categoryId).orElse(null);
+
+                    if (map.containsKey(blog)) {
+                        System.out.println("foundCat: " + foundCat);
+                        map.get(blog).add(foundCat);
+                        System.out.println("map: " + map);
+                    } else {
+                        catList.add(foundCat);
+                        map.put(blog, catList);
+                    }
                 }
+//                System.out.println("currPostId >>>>" + currPost.getId() + " | " + "postId >>> " + postId + " | " + "catId >>> " + categoryId);
             }
         }
 
@@ -68,10 +77,7 @@ public class DataService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
-//        System.out.println("list >>>> " + map);
-
-//        return map;
+        
         return sql;
     }
 
