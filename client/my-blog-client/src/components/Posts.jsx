@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import PostsCSS from '../css/Posts.css';
+import PostCategories from './PostCategories';
+import CatSection from './CatSection';
 import { getPosts } from '../proxies/proxies';
 import { Link } from 'react-router-dom';
 import { createDate } from '../helpers/helpers'
@@ -11,6 +13,7 @@ export const Posts = (props) => {
     let filteredPosts;
 
     const [posts, setPosts] = useState();
+    const [postCats, setPostCats] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -18,11 +21,46 @@ export const Posts = (props) => {
     }, [])
 
     const fetchPosts = async () => {
+        let postsDB = [];
+        let catsDB = [];
         let newPosts = await getPosts()
             .then(posts => {
+                let blogPosts = Object.keys(posts);
+                let blogCats = Object.values(posts);
+
+                blogPosts.map((bp, i) => {
+                    let obj = {};
+                    bp = bp.replace('{', '');
+                    bp = bp.replace('}', '');
+
+                    var arr = bp.split(',');
+
+                    arr.forEach((item, i) => {
+                        var s = item.split('=');
+                        obj[s[0]] = s[1];
+
+                    })
+
+                    postsDB.push(JSON.parse(JSON.stringify(obj).replace(/" /g, '"')));
+                });
+
+                blogCats.map((bc, i) => {
+                    let obj = {};
+                    if (bc.length > 1) {
+                        let catArr = bc.map(c => c)
+                        obj[i] = catArr;
+                    } else {
+                        obj[i] = bc;
+                    }
+                    catsDB.push(JSON.parse(JSON.stringify(obj)))
+                })
+
+
                 return posts;
             })
-        setPosts(newPosts);
+
+        setPosts(postsDB);
+        setPostCats(catsDB);
         setIsLoading(false);
     }
 
@@ -36,13 +74,15 @@ export const Posts = (props) => {
             let postNameLowerCased = post.title.toLowerCase();
             let searchTermLowerCased = props.searchTerm.toLowerCase();
 
-            return postNameLowerCased.startsWith(searchTermLowerCased)
+            return postNameLowerCased.includes(searchTermLowerCased)
         });
 
     }
 
+    console.log(posts);
+
     return (
-        <>
+        <div style={{display: "flex"}}>
             <Box style={PostsCSS} component="div" sx={{ marginTop: '50px', height: '400px', borderRadius: '5px' }}>
                 {!filteredPosts ? (
                     <article className='post-wrapper'>
@@ -51,6 +91,7 @@ export const Posts = (props) => {
                                 const date = createDate(p.datePosted);
                                 return (
                                     <div id="post-container" key={p.title}>
+                                        <PostCategories idx={i} postCats={postCats} />
                                         <Link
                                             to={`/blog/${p.id}`}
                                             className='title-link'
@@ -107,6 +148,8 @@ export const Posts = (props) => {
                 }
                 <AddPostButton loading={handleLoading} />
             </Box>
-        </>
+            <hr id="Post-divider"></hr>
+            <CatSection />
+        </div>
     )
 }

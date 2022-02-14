@@ -5,12 +5,14 @@ import com.example.myblog.model.Categories;
 import com.example.myblog.repository.BlogPostRepo;
 import com.example.myblog.repository.CategoriesRepo;
 import com.example.myblog.repository.PostCategoriesRepo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.*;
 
 @Service
 public class DataService {
@@ -24,8 +26,57 @@ public class DataService {
     @Autowired
     PostCategoriesRepo repo;
 
-    public List<BlogPost> getPosts() {
-        return blogPostRepo.findAll();
+    @Autowired
+    EntityManager entityManager;
+
+    private List<String> selectedCategories;
+
+    public String getPosts() {
+        var sql = "SELECT pc.post_id, pc.categories_id FROM my_blog.post_categories pc";
+        var getAllPosts = blogPostRepo.findAll();
+        Query q = entityManager.createNativeQuery(sql);
+        List<Object[]> rows = q.getResultList();
+        HashMap<HashMap<String, Object>, List<Categories>> map = new HashMap<>();
+
+        for (var i = 0; i < getAllPosts.size(); i++) {
+            for (Object[] r : rows) {
+                var currPost = getAllPosts.get(i);
+                List<Categories> catList = new ArrayList<>();
+                Integer postId = (Integer) r[0];
+                Integer categoryId = (Integer) r[1];
+                HashMap<String, Object> blog = new HashMap<>();
+
+                if (currPost.getId() == postId) {
+                    blog.put("id", currPost.getId());
+                    blog.put("content", currPost.getContent());
+                    blog.put("datePosted", currPost.getDatePosted());
+                    blog.put("dateUpdated", currPost.getDateUpdated());
+                    blog.put("imageLink", currPost.getImageLink());
+                    blog.put("mainContent", currPost.getMainContent());
+                    blog.put("title", currPost.getTitle());
+                    var foundCat = categoriesRepo.findById(categoryId).orElse(null);
+
+                    if (map.containsKey(blog)) {
+                        map.get(blog).add(foundCat);
+                    } else {
+                        catList.add(foundCat);
+                        map.put(blog, catList);
+                    }
+                }
+//                System.out.println("currPostId >>>>" + currPost.getId() + " | " + "postId >>> " + postId + " | " + "catId >>> " + categoryId);
+            }
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String json = objectMapper.writeValueAsString(map);
+            System.out.println(json);
+            return json;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return sql;
     }
 
     public BlogPost getPostById(Integer id) {
@@ -35,10 +86,13 @@ public class DataService {
 
     public void createPost(BlogPost blog) {
         var savedPost = blogPostRepo.save(blog);
+        var categories = getCategories();
 
-        Categories c = new Categories();
-        c.setName("Programming");
-        repo.testPersistence(blog, c);
+        for (Categories c : categories) {
+            if (selectedCategories.contains(c.getName().toLowerCase())) {
+                repo.addPostCategories(savedPost, c);
+            }
+        }
     }
 
     public void deletePost(Integer id) {
@@ -101,6 +155,10 @@ public class DataService {
             }
         }
 
+    }
+
+    public void getSelectedCategory(List<String> selected) {
+         selectedCategories = selected;
     }
 
 }
