@@ -89,7 +89,7 @@ export const Posts = (props) => {
               posts.map((p, i) => {
                 let jsonString = JSON.stringify(p);
                 let blogObj = createValidObjectFromJSON(jsonString);
-
+                console.log("blogObj -> " + jsonString);
                 const date = createDate(blogObj.datePosted);
                 return (
                   <div id="post-container" key={blogObj.title}>
