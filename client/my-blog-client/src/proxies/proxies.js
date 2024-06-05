@@ -7,7 +7,8 @@ export const getPosts = () => {
 
 export const getPostById = (id) => {
     return axios.get(`http://localhost:8080/blog/${id}`)
-        .then(res => res.data);
+        .then(res => res.data)
+        .catch(e => console.log(e.response));
 }
 
 export const addPost = (post) => {

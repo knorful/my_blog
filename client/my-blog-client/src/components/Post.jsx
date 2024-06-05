@@ -12,6 +12,7 @@ export const Post = (props) => {
     let params = useParams();
 
     useEffect(() => {
+        console.log("params => " + JSON.stringify(params));
         fetchPost(params.id)
     }, [params.id]);
 
