@@ -32,55 +32,55 @@ public class DataService {
     private List<String> selectedCategories;
 
     public String getPosts() {
-        var sql = "SELECT pc.post_id, pc.categories_id FROM my_blog.post_categories pc";
-        var getAllPosts = blogPostRepo.findAll();
+        // SQL query to fetch post-category relationships
+        String sql = "SELECT pc.post_id, pc.categories_id FROM my_blog.post_categories pc";
+
+        // Retrieve all blog posts
+        List<BlogPost> allPosts = blogPostRepo.findAll();
+
+        // Execute the native SQL query
         Query q = entityManager.createNativeQuery(sql);
         List<Object[]> rows = q.getResultList();
-        HashMap<HashMap<String, Object>, List<Categories>> map = new HashMap<>();
 
-        for (var i = 0; i < getAllPosts.size(); i++) {
-            for (Object[] r : rows) {
-                var currPost = getAllPosts.get(i);
-                List<Categories> catList = new ArrayList<>();
-                Integer postId = (Integer) r[0];
-                Integer categoryId = (Integer) r[1];
-                HashMap<String, Object> blog = new HashMap<>();
+        // Map to hold posts and their corresponding categories
+        Map<BlogPost, List<Categories>> postCategoriesMap = new HashMap<>();
 
-                if (currPost.getId() == postId) {
-                    blog.put("id", currPost.getId());
-                    blog.put("content", currPost.getContent());
-                    blog.put("datePosted", currPost.getDatePosted());
-                    blog.put("dateUpdated", currPost.getDateUpdated());
-                    blog.put("imageLink", currPost.getImageLink());
-                    blog.put("mainContent", currPost.getMainContent());
-                    blog.put("title", currPost.getTitle());
-                    var foundCat = categoriesRepo.findById(categoryId).orElse(null);
+        // Map posts by their IDs for quick lookup
+        Map<Integer, BlogPost> postMap = new HashMap<>();
+        for (BlogPost post : allPosts) {
+            postMap.put(post.getId(), post);
+        }
 
-                    if (map.containsKey(blog)) {
-                        map.get(blog).add(foundCat);
-                    } else {
-                        catList.add(foundCat);
-                        map.put(blog, catList);
-                    }
+        // Process the query results and populate the map
+        for (Object[] row : rows) {
+            Integer postId = (Integer) row[0];
+            Integer categoryId = (Integer) row[1];
+
+            BlogPost post = postMap.get(postId);
+            if (post != null) {
+                Categories category = categoriesRepo.findById(categoryId).orElse(null);
+                if (category != null) {
+                    postCategoriesMap.computeIfAbsent(post, k -> new ArrayList<>()).add(category);
                 }
-//                System.out.println("currPostId >>>>" + currPost.getId() + " | " + "postId >>> " + postId + " | " + "catId >>> " + categoryId);
             }
         }
 
+        // Convert the map to a JSON string
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String json = objectMapper.writeValueAsString(map);
+            String json = objectMapper.writeValueAsString(postCategoriesMap);
             System.out.println(json);
             return json;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
+        // Return SQL string in case of error (consider returning an error message instead)
         return sql;
     }
 
     public BlogPost getPostById(Integer id) {
-        System.out.println("Getting Post By Id...");
+        System.out.println("Getting Post By Id..." + id);
         return blogPostRepo.getPostById(id);
     }
 
@@ -109,28 +109,25 @@ public class DataService {
 
     public void updatePost(BlogPost newBlog, Integer id) {
         try {
-            var searchForBlog = blogPostRepo.findById(id);
+            Optional<BlogPost> searchForBlog = blogPostRepo.findById(id);
             System.out.println("found this blog => " + searchForBlog);
-            searchForBlog
-                    .ifPresentOrElse(blog -> {
-                                System.out.println(blog);
-                                blogPostRepo.save(
-                                        new BlogPost(
-                                                id,
-                                                newBlog.getImageLink(),
-                                                newBlog.getTitle(),
-                                                newBlog.getContent(),
-                                                newBlog.getMainContent(),
-                                                newBlog.getDatePosted(),
-                                                newBlog.getDateUpdated(),
-                                                null
-                                        )
-                                );
-                            },
-                            () -> System.out.println("blog not found!")
-                    );
+
+            searchForBlog.ifPresentOrElse(blog -> {
+                // Update fields of the existing blog post
+                blog.setImageLink(newBlog.getImageLink());
+                blog.setTitle(newBlog.getTitle());
+                blog.setContent(newBlog.getContent());
+                blog.setMainContent(newBlog.getMainContent());
+                blog.setDatePosted(newBlog.getDatePosted());
+                blog.setDateUpdated(newBlog.getDateUpdated());
+
+                // Save the updated blog post
+                blogPostRepo.save(blog);
+            }, () -> System.out.println("blog not found!"));
         } catch (Exception e) {
-            System.out.println(e);
+            // Log the exception (consider using a logging framework like SLF4J)
+            System.out.println("An error occurred while updating the post: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

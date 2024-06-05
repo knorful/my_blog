@@ -20,7 +20,7 @@ public class BlogPostController {
     }
 
     @GetMapping(path = "{id}")
-    public BlogPost getPostById(@PathVariable Integer id) {
+    public BlogPost getPostById(@PathVariable("id") Integer id) {
         return dataService.getPostById(id);
     }
 
